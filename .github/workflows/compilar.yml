@@ -1,0 +1,30 @@
+
+name: Crear ejecutable de Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  compilar:
+    runs-on: windows-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar PyInstaller
+        run: python -m pip install pyinstaller
+
+      - name: Crear EXE
+        run: python -m PyInstaller --clean --onefile --windowed --name Simulador simulador.py
+
+      - name: Guardar ejecutable
+        uses: actions/upload-artifact@v4
+        with:
+          name: Simulador-Windows
+          path: dist/Simulador.exe
